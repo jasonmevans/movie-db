@@ -5,6 +5,8 @@ import {
   Route
 } from "react-router-dom";
 
+import Search from './views/Search';
+
 import './App.css';
 
 function App() {
@@ -13,6 +15,7 @@ function App() {
       <h1>The Movie Database</h1>
       <div>
         <Switch>
+          <Route exact path="/" component={Search} />
         </Switch>
       </div>
     </Router>
