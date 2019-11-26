@@ -6,7 +6,7 @@ function Properties(props = {}) {
   const { data, fields } = props;
 
   return (
-    <>
+    <div className="movie-details--properties">
       {
         fields.map(([key, label]) => (
           <div key={key}>
@@ -15,7 +15,7 @@ function Properties(props = {}) {
           </div>
         ))
       }
-    </>
+    </div>
   );
 }
 

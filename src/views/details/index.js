@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Properties from './properties';
 
+import './details.css';
+
 function Details(props = {}) {
   const { movieId } = props.match.params;
 
@@ -16,11 +18,17 @@ function Details(props = {}) {
   }, [movieId]);
 
   return (
-    <div>
-      <img src={movieDetails.poster_path} alt={`Movie poster for ${movieDetails.title}`} />
-      <h1>{movieDetails.title}</h1>
-      <h2>{movieDetails.tagline}</h2>
-      <p>{movieDetails.overview}</p>
+    <div className="movie-details">
+      <img
+        src={movieDetails.poster_path}
+        className="movie-details--poster"
+        alt={`Movie poster for ${movieDetails.title}`}
+      />
+      <div className="movie-details--content">
+        <h1>{movieDetails.title}</h1>
+        <h2>{movieDetails.tagline}</h2>
+        <p>{movieDetails.overview}</p>
+      </div>
       <Properties
         data={movieDetails}
         fields={[

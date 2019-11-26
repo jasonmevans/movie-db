@@ -1,0 +1,18 @@
+.movie-details {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "poster movie-content" "movie-details movie-content";
+}
+
+.movie-details--poster {
+  grid-area: poster;
+}
+
+.movie-details--content {
+  grid-area: movie-content;
+}
+
+.movie-details--properties {
+  grid-area: movie-details;
+}
