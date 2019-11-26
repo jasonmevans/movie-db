@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import Search from './views/search/index';
+import Details from './views/details/index';
 
 import './App.css';
 
@@ -16,6 +17,7 @@ function App() {
       <div>
         <Switch>
           <Route exact path="/" component={Search} />
+          <Route path="/movie/:movieId" component={Details} />
         </Switch>
       </div>
     </Router>
