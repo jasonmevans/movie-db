@@ -12,20 +12,23 @@ const headers = {
 
 app.use((req, res, next) => {
   console.log("Incoming request for", req.url);
+  res.set('Access-Control-Allow-Origin', '*');
   next();
 })
 
-app.get('/movie/:movieId', (req, res) => {
+app.get('/api/movie/:movieId', (req, res) => {
   const { movieId } = req.params;
 
   fetch(`https://api.themoviedb.org/3/movie/${movieId}`, { headers })
     .then(async response => res.json(await response.json()));
 });
 
-app.get('/search', (req, res) => {
-  const { title } = req.query;
+app.get('/api/search', (req, res) => {
+  const { query } = req.query;
 
-  fetch(`https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(title)}`, { headers })
+  console.log("Searching for", query);
+
+  fetch(`https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`, { headers })
     .then(async response => res.json(await response.json()));
 });
 

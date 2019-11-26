@@ -5,7 +5,7 @@ import {
   Route
 } from "react-router-dom";
 
-import Search from './views/Search';
+import Search from './views/search/index';
 
 import './App.css';
 
