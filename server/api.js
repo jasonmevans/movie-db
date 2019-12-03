@@ -42,6 +42,11 @@ app.get('/api/search', (req, res) => {
     .then(async (response) => res.json(await response.json()));
 });
 
+app.get('/api/popular', (req, res) => {
+  fetch(`https://api.themoviedb.org/3/movie/popular`, { headers })
+    .then(async (response) => res.json(await response.json()));
+});
+
 app.get('/api/images', (req, res) => {
   const { imagePath } = req.query;
 

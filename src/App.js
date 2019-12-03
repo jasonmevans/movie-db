@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from "react-router-dom";
 
 import appConfig from './config'
@@ -22,18 +23,22 @@ function App() {
 
   return (
     <Router>
-      <nav>
-        <h1 className="title is-1">The Movie Database</h1>
+      <nav className="navbar" role="navigation" aria-label="main navigation">
+        <div className="container">
+          <h1 className="title is-2 has-text-weight-light">The Movie Database</h1>
+        </div>
       </nav>
-      <div className="movie-database--main">
-        <Switch>
-          <Route exact path="/" component={Search} />
-          <Route path="/movies/:movieId" component={Details} />
-          <Route
-            path="/movie/:movieId"
-            render={(props) => <Details {...props} config={config} />}
-          />
-        </Switch>
+      <div className="container is-fluid">
+        <div className="container">
+          <Switch>
+            <Route exact path="/" component={Search} />
+            <Route path="/movies/:movieId" component={Details} />
+            <Route
+              path="/movie/:movieId"
+              render={(props) => <Details {...props} config={config} />}
+            />
+          </Switch>
+        </div>
       </div>
     </Router>
   );
