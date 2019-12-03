@@ -22,8 +22,10 @@ function App() {
 
   return (
     <Router>
-      <h1>The Movie Database</h1>
-      <div>
+      <nav>
+        <h1>The Movie Database</h1>
+      </nav>
+      <div className="movie-database--main">
         <Switch>
           <Route exact path="/" component={Search} />
           <Route path="/movies/:movieId" component={Details} />

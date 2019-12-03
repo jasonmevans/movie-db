@@ -20,7 +20,9 @@ function Details(props = {}) {
     }
   } = props;
 
-  const [movieDetails, setMovieDetails] = useState({});
+  const [movieDetails, setMovieDetails] = useState({
+    genres: []
+  });
 
   useEffect(() => {
     window.fetch(`${API_BASE}/movie/${movieId}`)
@@ -39,8 +41,16 @@ function Details(props = {}) {
       />)}
       <div className="movie-details--content">
         <h1>{movieDetails.title}</h1>
-        <h2>{movieDetails.tagline}</h2>
+        {movieDetails.title !== movieDetails.original_title &&
+          <p>{movieDetails.original_title}</p>}
+        <p className="movie-details--tagline">{movieDetails.tagline}</p>
         <p>{movieDetails.overview}</p>
+        <h3>Genres</h3>
+        <ul className="movie-details--content-genres">
+          {
+            movieDetails.genres.map(genre => <li key={genre.id}>{genre.name}</li>)
+          }
+        </ul>
       </div>
       <Properties
         data={movieDetails}
@@ -51,7 +61,9 @@ function Details(props = {}) {
           ['runtime', 'Run time', (runtime) => `${runtime} minutes`],
           ['popularity', 'Popularity'],
           ['budget', 'Budget', formatMoney],
-          ['revenue', 'Revenue', formatMoney]
+          ['revenue', 'Revenue', formatMoney],
+          ['spoken_languages', 'Languages', (languages) =>
+            languages.map(lang => lang.name).join(', ')]
         ]}
       />
     </div>
