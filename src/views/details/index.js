@@ -34,13 +34,14 @@ function Details(props = {}) {
   const imagePath = `${base_url}${imageSize}`;
 
   return (
-    <div className="columns">
-      <div class="column is-4">
-        {(movieDetails.poster_path && base_url && <img
-          src={`${API_BASE}/images?imagePath=${imagePath}${movieDetails.poster_path}`}
-          className="movie-details--poster"
-          alt={`Movie poster for ${movieDetails.title}`}
-        />)}
+    <div className="movie-details columns">
+      <div className="column is-4">
+        <figure className="image is-2by3">
+          {(movieDetails.poster_path && base_url && <img
+            src={`${API_BASE}/images?imagePath=${imagePath}${movieDetails.poster_path}`}
+            alt={`Movie poster for ${movieDetails.title}`}
+            />)}
+        </figure>
         <Properties
           data={movieDetails}
           fields={[
@@ -56,15 +57,16 @@ function Details(props = {}) {
         />
       </div>
       <div className="column is-8">
-        <h1 className="title is-1">{movieDetails.title}</h1>
-        <p className="subtitle is-4">{movieDetails.tagline}</p>
         <p>
           <a
             href={movieDetails.homepage}
             target="_blank"
             rel="noopener noreferrer"
+            title={`Home page for ${movieDetails.title}`}
           >{movieDetails.homepage}</a>
         </p>
+        <h1 className="title is-1">{movieDetails.title}</h1>
+        <p className="subtitle is-4">{movieDetails.tagline}</p>
         <div className="box content">
           <h3 className="title is-5">Overview</h3>
           <p>{movieDetails.overview}</p>

@@ -1,3 +1,15 @@
+.movie-details.columns {
+  margin-top: 2rem;
+}
+
+.movie-details--properties.columns.is-gapless {
+  margin-top: 1rem;
+}
+
+.movie-details--properties .is-size-7 {
+  line-height: 1.75rem;
+}
+
 .movie-details--content-genres.tags {
   list-style: none;
   margin-left: 0;
