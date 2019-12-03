@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
+
 import Properties from './properties';
 
 import { API_BASE } from '../../config';
@@ -43,17 +45,21 @@ function Details(props = {}) {
       <Properties
         data={movieDetails}
         fields={[
-          ['release_date', 'Release date'],
           ['homepage', 'Web site'],
-          ['budget', 'Budget'],
-          ['popularity', 'Popularity'],
           ['status', 'Status'],
-          ['runtime', 'Run time'],
-          ['revenue', 'Revenue']
+          ['release_date', 'Release date', (date) => moment(date, 'YYYY-MM-DD').format('LL')],
+          ['runtime', 'Run time', (runtime) => `${runtime} minutes`],
+          ['popularity', 'Popularity'],
+          ['budget', 'Budget', formatMoney],
+          ['revenue', 'Revenue', formatMoney]
         ]}
       />
     </div>
   );
+}
+
+function formatMoney(v) {
+  return `$${v.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
 }
 
 export default Details;

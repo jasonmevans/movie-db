@@ -1,18 +1,14 @@
 import React from 'react';
 
-function Properties(props = {}) {
-  console.log(Object.entries(props.data));
-
-  const { data, fields } = props;
-
+function Properties({ data = {}, fields = [] }) {
   return (
     <div className="movie-details--properties">
       {
-        fields.map(([key, label]) => (
-          (key in data && (
+        fields.map(([key, label, transform]) => (
+          (key in data && data[key] && (
             <div className="movie-details--properties-row" key={key}>
               <div>{label}</div>
-              <div>{data[key]}</div>
+              <div>{transform ? transform(data[key]) : data[key]}</div>
             </div>
           ))
         ))

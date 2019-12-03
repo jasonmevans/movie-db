@@ -3,10 +3,12 @@
   grid-template-rows: auto;
   grid-template-columns: auto 1fr;
   grid-template-areas: "poster movie-content" "movie-details movie-content";
+  grid-gap: 1rem;
 }
 
 .movie-details--poster {
   grid-area: poster;
+  width: 16rem;
 }
 
 .movie-details--content {
