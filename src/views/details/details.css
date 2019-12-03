@@ -1,29 +1,4 @@
-.movie-details {
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: auto 1fr;
-  grid-template-areas: "poster movie-content" "movie-details movie-content";
-  grid-gap: 1rem;
-}
-
-.movie-details--poster {
-  grid-area: poster;
-  width: 16rem;
-}
-
-.movie-details--content {
-  grid-area: movie-content;
-}
-
-.movie-details--content-genres {
+.movie-details--content-genres.tags {
   list-style: none;
-}
-
-.movie-details--properties {
-  grid-area: movie-details;
-}
-
-.movie-details--properties-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  margin-left: 0;
 }

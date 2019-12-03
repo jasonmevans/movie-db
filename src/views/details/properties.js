@@ -2,17 +2,17 @@ import React from 'react';
 
 function Properties({ data = {}, fields = [] }) {
   return (
-    <div className="movie-details--properties">
-      {
-        fields.map(([key, label, transform]) => (
-          (key in data && data[key] && (
-            <div className="movie-details--properties-row" key={key}>
-              <div>{label}</div>
-              <div>{transform ? transform(data[key]) : data[key]}</div>
+    <div className="columns is-gapless is-multiline">
+      {fields.map(([key, label, transform]) => (
+        (key in data && data[key] && (
+          <>
+            <div className="column is-5">{label}</div>
+            <div className="column is-7">
+              {transform ? transform(data[key]) : data[key]}
             </div>
-          ))
+          </>
         ))
-      }
+      ))}
     </div>
   );
 }

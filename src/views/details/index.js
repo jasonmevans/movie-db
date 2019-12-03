@@ -33,15 +33,30 @@ function Details(props = {}) {
   const imagePath = `${base_url}${imageSize}`;
 
   return (
-    <div className="movie-details">
-      {(movieDetails.poster_path && base_url && <img
-        src={`${API_BASE}/images?imagePath=${imagePath}${movieDetails.poster_path}`}
-        className="movie-details--poster"
-        alt={`Movie poster for ${movieDetails.title}`}
-      />)}
-      <div className="movie-details--content">
+    <div className="columns">
+      <div class="column is-4">
+        {(movieDetails.poster_path && base_url && <img
+          src={`${API_BASE}/images?imagePath=${imagePath}${movieDetails.poster_path}`}
+          className="movie-details--poster"
+          alt={`Movie poster for ${movieDetails.title}`}
+        />)}
+        <Properties
+          data={movieDetails}
+          fields={[
+            ['status', 'Status'],
+            ['release_date', 'Release date', (date) => moment(date, 'YYYY-MM-DD').format('LL')],
+            ['runtime', 'Run time', (runtime) => `${runtime} minutes`],
+            ['popularity', 'Popularity'],
+            ['budget', 'Budget', formatMoney],
+            ['revenue', 'Revenue', formatMoney],
+            ['spoken_languages', 'Languages', (languages) =>
+              languages.map(lang => lang.name).join(', ')]
+          ]}
+        />
+      </div>
+      <div className="column is-8">
         <h1 className="title is-1">{movieDetails.title}</h1>
-        <p className="subtitle is-4 movie-details--tagline">{movieDetails.tagline}</p>
+        <p className="subtitle is-4">{movieDetails.tagline}</p>
         <p>
           <a
             href={movieDetails.homepage}
@@ -61,19 +76,6 @@ function Details(props = {}) {
           </ul>
         </div>
       </div>
-      <Properties
-        data={movieDetails}
-        fields={[
-          ['status', 'Status'],
-          ['release_date', 'Release date', (date) => moment(date, 'YYYY-MM-DD').format('LL')],
-          ['runtime', 'Run time', (runtime) => `${runtime} minutes`],
-          ['popularity', 'Popularity'],
-          ['budget', 'Budget', formatMoney],
-          ['revenue', 'Revenue', formatMoney],
-          ['spoken_languages', 'Languages', (languages) =>
-            languages.map(lang => lang.name).join(', ')]
-        ]}
-      />
     </div>
   );
 }
