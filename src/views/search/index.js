@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import debounce from '../../utils/debounce';
 
+import appConfig from '../../config';
+
 function Search(props = {}) {
   const [searchString, setSearchString] = useState("");
   const [searchResults, setSearchResults] = useState({
@@ -11,11 +13,8 @@ function Search(props = {}) {
   const updateSearch = debounce(value => setSearchString(value), 500);
 
   useEffect(() => {
-    window.fetch(`http://localhost:3001/api/search?query=${searchString}`)
-      .then(response => response.json())
-      .then(json => {
-        setSearchResults(json)
-      });
+    window.fetch(`${appConfig.API_BASE}/search?query=${searchString}`)
+      .then(async (response) => setSearchResults(await response.json()));
   }, [searchString]);
 
   return (

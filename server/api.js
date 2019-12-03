@@ -16,20 +16,39 @@ app.use((req, res, next) => {
   next();
 })
 
+app.get('/api/configuration', (req, res) => {
+  fetch(`https://api.themoviedb.org/3/configuration`, { headers })
+    .then(async (response) => res.json(await response.json()));
+});
+
 app.get('/api/movie/:movieId', (req, res) => {
   const { movieId } = req.params;
 
   fetch(`https://api.themoviedb.org/3/movie/${movieId}`, { headers })
-    .then(async response => res.json(await response.json()));
+    .then(async (response) => res.json(await response.json()));
+});
+
+app.get('/api/movie/poster/:movieId', (req, res) => {
+  const { movieId } = req.params;
+
+  fetch(`https://api.themoviedb.org/3/movie/${movieId}`, { headers })
+    .then(async (response) => res.json(await response.json()));
 });
 
 app.get('/api/search', (req, res) => {
   const { query } = req.query;
 
-  console.log("Searching for", query);
-
   fetch(`https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`, { headers })
-    .then(async response => res.json(await response.json()));
+    .then(async (response) => res.json(await response.json()));
+});
+
+app.get('/api/images', (req, res) => {
+  const { imagePath } = req.query;
+
+  fetch(imagePath).then(response => {
+    res.writeHead(response.status, response.headers);
+    response.body.pipe(res).on('end', () => res.end());
+  });
 });
 
 app.listen(port, () => console.log(`Listening on ${port}`));
