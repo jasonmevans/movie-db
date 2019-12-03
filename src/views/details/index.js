@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
 import Properties from './properties';
+import formatMoney from '../../utils/format-money';
 
 import { API_BASE } from '../../config';
 
@@ -78,10 +79,6 @@ function Details(props = {}) {
       </div>
     </div>
   );
-}
-
-function formatMoney(v) {
-  return `$${v.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
 }
 
 export default Details;
