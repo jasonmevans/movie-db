@@ -10,6 +10,7 @@ import appConfig from './config'
 import Search from './views/search/index';
 import Details from './views/details/index';
 
+import './bulma.sass';
 import './App.css';
 
 function App() {

@@ -40,17 +40,20 @@ function Details(props = {}) {
         alt={`Movie poster for ${movieDetails.title}`}
       />)}
       <div className="movie-details--content">
-        <h1>{movieDetails.title}</h1>
-        {movieDetails.title !== movieDetails.original_title &&
-          <p>{movieDetails.original_title}</p>}
-        <p className="movie-details--tagline">{movieDetails.tagline}</p>
-        <p>{movieDetails.overview}</p>
-        <h3>Genres</h3>
-        <ul className="movie-details--content-genres">
-          {
-            movieDetails.genres.map(genre => <li key={genre.id}>{genre.name}</li>)
-          }
-        </ul>
+        <h1 className="title is-1">{movieDetails.title}</h1>
+        <p className="subtitle is-4 movie-details--tagline">{movieDetails.tagline}</p>
+
+        <div className="">
+          <p>{movieDetails.overview}</p>
+          <h3>Genres</h3>
+          <ul className="tags movie-details--content-genres">
+            {
+              movieDetails.genres.map(genre =>
+                <li key={genre.id} className="tag">{genre.name}</li>
+              )
+            }
+          </ul>
+        </div>
       </div>
       <Properties
         data={movieDetails}
