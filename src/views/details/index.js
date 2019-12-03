@@ -42,10 +42,16 @@ function Details(props = {}) {
       <div className="movie-details--content">
         <h1 className="title is-1">{movieDetails.title}</h1>
         <p className="subtitle is-4 movie-details--tagline">{movieDetails.tagline}</p>
-
-        <div className="">
+        <p>
+          <a
+            href={movieDetails.homepage}
+            target="_blank"
+            rel="noopener noreferrer"
+          >{movieDetails.homepage}</a>
+        </p>
+        <div className="box content">
+          <h3 className="title is-5">Overview</h3>
           <p>{movieDetails.overview}</p>
-          <h3>Genres</h3>
           <ul className="tags movie-details--content-genres">
             {
               movieDetails.genres.map(genre =>
@@ -58,7 +64,6 @@ function Details(props = {}) {
       <Properties
         data={movieDetails}
         fields={[
-          ['homepage', 'Web site'],
           ['status', 'Status'],
           ['release_date', 'Release date', (date) => moment(date, 'YYYY-MM-DD').format('LL')],
           ['runtime', 'Run time', (runtime) => `${runtime} minutes`],

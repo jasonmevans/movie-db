@@ -10,7 +10,6 @@ import appConfig from './config'
 import Search from './views/search/index';
 import Details from './views/details/index';
 
-import './bulma.sass';
 import './App.css';
 
 function App() {
@@ -24,7 +23,7 @@ function App() {
   return (
     <Router>
       <nav>
-        <h1>The Movie Database</h1>
+        <h1 className="title is-1">The Movie Database</h1>
       </nav>
       <div className="movie-database--main">
         <Switch>
