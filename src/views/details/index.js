@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Properties from './properties';
 
+import appConfig from '../../config'
+
 import './details.css';
 
 function Details(props = {}) {
-  const { movieId } = props.match.params;
+  const {
+    match: {
+      params: { movieId = '' }
+    }
+  } = props;
 
   const [movieDetails, setMovieDetails] = useState({});
 
   useEffect(() => {
-    window.fetch(`http://localhost:3001/api/movie/${movieId}`)
-      .then(response => response.json())
-      .then(json => {
-        console.log(json);
-        setMovieDetails(json)
-      });
+    window.fetch(`${appConfig.API_BASE}/movie/${movieId}`)
+      .then(async (response) => setMovieDetails(await response.json()));
   }, [movieId]);
 
   return (

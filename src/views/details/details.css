@@ -16,3 +16,8 @@
 .movie-details--properties {
   grid-area: movie-details;
 }
+
+.movie-details--properties-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

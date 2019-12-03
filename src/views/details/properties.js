@@ -9,10 +9,12 @@ function Properties(props = {}) {
     <div className="movie-details--properties">
       {
         fields.map(([key, label]) => (
-          <div key={key}>
-            <div>{label}</div>
-            <div>{data[key]}</div>
-          </div>
+          (key in data && (
+            <div className="movie-details--properties-row" key={key}>
+              <div>{label}</div>
+              <div>{data[key]}</div>
+            </div>
+          ))
         ))
       }
     </div>
