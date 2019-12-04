@@ -68,7 +68,7 @@ function Details(props = {}) {
         <h1 className="title is-1">{movieDetails.title}</h1>
         <p className="subtitle is-4">{movieDetails.tagline}</p>
         <div className="box content">
-          <h3 className="title is-5">Overview</h3>
+          <h3 className="title is-5">Synopsis</h3>
           <p>{movieDetails.overview}</p>
           <ul className="tags movie-details--content-genres">
             {

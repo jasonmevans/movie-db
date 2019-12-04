@@ -23,11 +23,9 @@ function App() {
 
   return (
     <Router>
-      <nav className="navbar" role="navigation" aria-label="main navigation">
-        <div className="container">
-          <h1 className="title is-2 has-text-weight-light">The Movie Database</h1>
-        </div>
-      </nav>
+      <div className="movie--main container">
+        <h1 className="title is-4 has-text-weight-light">The Movie Database</h1>
+      </div>
       <div className="container is-fluid">
         <div className="container">
           <Switch>

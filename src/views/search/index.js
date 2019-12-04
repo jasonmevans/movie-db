@@ -61,11 +61,11 @@ function Search(props = {}) {
           </div>
         </div>
       </div>
-      <h2 className="title is-2">{searchString === '' ? "Popular Movies" : "Search Results"}</h2>
+      <h2 className="title is-2">{searchString === '' ? 'Top Movies' : 'Search Results'}</h2>
       <p>Found {searchResults.total_results} results (Page {currentPage} of {searchResults.total_pages})</p>
       <dl className="movie-search--results">
         {searchResults.errors
-          ? "No Results"
+          ? 'No Results'
           : searchResults.results.map((result, i) => (
             <div key={result.id} data-index={`${(PAGE_SIZE * (currentPage - 1)) + (i + 1)}.`}>
               <dt>
