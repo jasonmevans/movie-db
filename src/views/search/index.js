@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
+import useInput from '../../hooks/use-input';
 import useDebounce from '../../hooks/use-debounce';
 import buildQueryParams from '../../utils/build-query-params';
 
@@ -9,8 +10,13 @@ import { API_BASE, PAGE_SIZE } from '../../config';
 import './search.css';
 
 function Search(props = {}) {
-  const [searchString, setSearchString] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchString, searchInput] = useInput('', {
+    id: "search-field",
+    placeholder: "Enter a movie title to search",
+    className: "input",
+    onChange: () => setCurrentPage(1)
+  });
   const debouncedSearch = useDebounce(searchString, 500);
   const [searchResults, setSearchResults] = useState({
     results: [],
@@ -43,24 +49,14 @@ function Search(props = {}) {
     <div className="movie-search">
       <div className="box">
         <label htmlFor="search-field" className="label">Search by movie title</label>
-        <div className="field has-addons">
+        <div className="field">
           <div className="control is-expanded">
-            <input
-              id="search-field"
-              type="text"
-              placeholder="Enter a movie title to search"
-              className="input"
-              value={searchString}
-              onChange={({ target: { value = '' } }) => {
-                setCurrentPage(1);
-                updateSearch(value);
-              }}
-            />
+            { searchInput }
           </div>
         </div>
       </div>
       <h2 className="title is-2">{searchString === '' ? "Popular Movies" : "Search Results"}</h2>
-      <p>Found {searchResults.total_results} results. (Page {currentPage} of {searchResults.total_pages})</p>
+      <p>Found {searchResults.total_results} results (Page {currentPage} of {searchResults.total_pages})</p>
       <dl className="movie-search--results">
         {searchResults.errors
           ? "No Results"
@@ -75,9 +71,9 @@ function Search(props = {}) {
       </dl>
       {
         (searchResults.total_results > PAGE_SIZE &&
-          <div class="buttons">
+          <div className="buttons">
             <button
-              class="button is-primary"
+              className="button is-primary"
               onClick={() => {
                 const prevPage = currentPage - 1 > 0
                   ? currentPage - 1
@@ -87,7 +83,7 @@ function Search(props = {}) {
               }}
             >Prev</button>
             <button
-              class="button is-primary"
+              className="button is-primary"
               onClick={() => {
                 const nextPage = currentPage + 1 <= searchResults.total_pages
                   ? currentPage + 1
