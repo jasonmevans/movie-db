@@ -39,8 +39,10 @@ function Search({ history, location }) {
       params.delete('query');
     }
 
-    params.sort();
-    history.push(`?${params.toString()}`);
+    if (params.get('query') !== query) {
+      params.sort();
+      history.push(`?${params.toString()}`);
+    }
   }, [debouncedSearch]); // eslint-disable-line
 
   useEffect(() => {
