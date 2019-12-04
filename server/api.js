@@ -36,14 +36,24 @@ app.get('/api/movie/poster/:movieId', (req, res) => {
 });
 
 app.get('/api/search', (req, res) => {
-  const { query } = req.query;
+  let url = 'https://api.themoviedb.org/3/search/movie';
 
-  fetch(`https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`, { headers })
+  if (Object.keys(req.query).length > 0) {
+    url = `${url}?${buildQueryParams(req.query)}`
+  }
+
+  fetch(url, { headers })
     .then(async (response) => res.json(await response.json()));
 });
 
 app.get('/api/popular', (req, res) => {
-  fetch(`https://api.themoviedb.org/3/movie/popular`, { headers })
+  let url = 'https://api.themoviedb.org/3/movie/popular';
+
+  if (Object.keys(req.query).length > 0) {
+    url = `${url}?${buildQueryParams(req.query)}`
+  }
+
+  fetch(url, { headers })
     .then(async (response) => res.json(await response.json()));
 });
 
@@ -55,5 +65,11 @@ app.get('/api/images', (req, res) => {
     response.body.pipe(res).on('end', () => res.end());
   });
 });
+
+function buildQueryParams(params) {
+  return Object.entries(params).map(([key, val]) => {
+    return `${key}=${encodeURIComponent(val)}`
+  }).join('&');
+}
 
 app.listen(port, () => console.log(`Listening on ${port}`));
