@@ -70,7 +70,7 @@ function Details(props = {}) {
         <div className="box content">
           <h3 className="title is-5">Synopsis</h3>
           <p>{movieDetails.overview}</p>
-          <ul className="tags movie-details--content-genres">
+          <ul className="tags movie-details--genres">
             {
               movieDetails.genres.map(genre =>
                 <li key={genre.id} className="tag">{genre.name}</li>

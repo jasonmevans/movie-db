@@ -11,7 +11,7 @@
   line-height: 1.75rem;
 }
 
-.movie-details--content-genres.tags {
+.movie-details--genres.tags {
   list-style: none;
   margin-left: 0;
 }
