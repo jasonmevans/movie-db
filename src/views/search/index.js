@@ -1,55 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { useSearchParam } from 'react-use';
 
 import useInput from '../../hooks/use-input';
 import useDebounce from '../../hooks/use-debounce';
-import usePersistedState from '../../hooks/use-persisted-state';
-import buildQueryParams from '../../utils/build-query-params';
 
 import { API_BASE, PAGE_SIZE } from '../../config';
 
 import './search.css';
 
-function Search(props = {}) {
-  const [currentPage, setCurrentPage] = usePersistedState('current-page', 1);
-  const [savedSearchString, setSavedSearchString] = usePersistedState('search-string', '');
+function Search({ history, location }) {
+  const page = useSearchParam('page');
+  const query = useSearchParam('query');
 
-  const [searchString, searchInput] = useInput(savedSearchString, {
+  const currentPage = parseInt(page) || 1;
+
+  const [searchString, searchInput] = useInput(query || '', {
     id: 'search-field',
     placeholder: 'Enter a movie title to search',
-    className: 'input',
-    onChange: () => setCurrentPage(1)
+    className: 'input'
   });
   const debouncedSearch = useDebounce(searchString, 500);
   const [searchResults, setSearchResults] = useState({
     results: [],
-    page: 1,
-    total_pages: 1,
+    page: 0,
+    total_pages: 0,
     total_results: 0
   });
-
+  const { total_results, total_pages } = searchResults;
 
   useEffect(() => {
-    let requestUrl = '';
-    let params = {};
+    let params = new URLSearchParams(location.search);
 
-    if (debouncedSearch === '') {
-      requestUrl = `${API_BASE}/popular`;
+    if (debouncedSearch) {
+      params.set('query', debouncedSearch);
+      params.delete('page');
     } else {
-      requestUrl = `${API_BASE}/search`;
-      Object.assign(params, { query: debouncedSearch });
+      params.delete('query');
     }
 
-    if (currentPage > 1) {
-      Object.assign(params, { page: currentPage });
-    }
+    params.sort();
+    history.push(`?${params.toString()}`);
+  }, [debouncedSearch]); // eslint-disable-line
 
-    window.fetch(`${requestUrl}?${buildQueryParams(params)}`)
+  useEffect(() => {
+    let params = new URLSearchParams(location.search);
+    const requestUrl = !query
+      ? `${API_BASE}/popular`
+      : `${API_BASE}/search`;
+
+    window.fetch(`${requestUrl}?${params.toString()}`)
       .then(async (response) => {
         setSearchResults(await response.json());
-        setSavedSearchString(debouncedSearch);
       });
-  }, [currentPage, debouncedSearch, setSavedSearchString]);
+  }, [location.search]); // eslint-disable-line
+
+  function handlePrevPage() {
+    if (currentPage - 1 <= 0) {
+      return;
+    }
+
+    let params = new URLSearchParams(location.search);
+
+    if (currentPage - 1 > 1) {
+      params.set('page', currentPage - 1);
+    } else {
+      params.delete('page');
+    }
+
+    params.sort();
+    history.push(`?${params.toString()}`);
+    window.scrollTo(0, 0);
+  }
+
+  function handleNextPage() {
+    if (currentPage + 1 > searchResults.total_pages) {
+      return;
+    }
+
+    let params = new URLSearchParams(location.search);
+
+    if (currentPage + 1 > 1) {
+      params.set('page', currentPage + 1);
+    } else {
+      params.delete('page');
+    }
+
+    params.sort();
+    history.push(`?${params.toString()}`);
+    window.scrollTo(0, 0);
+  }
 
   return (
     <div className="movie-search">
@@ -62,7 +102,7 @@ function Search(props = {}) {
         </div>
       </div>
       <h2 className="title is-2">{searchString === '' ? 'Top Movies' : 'Search Results'}</h2>
-      <p>Found {searchResults.total_results} results (Page {currentPage} of {searchResults.total_pages})</p>
+      <p>Showing {PAGE_SIZE * (currentPage - 1) + 1}-{total_results < PAGE_SIZE ? total_results : PAGE_SIZE * (currentPage)} of {total_results} results (Page {currentPage} of {total_pages}) for query "{searchString}"</p>
       <dl className="movie-search--results">
         {searchResults.errors
           ? 'No Results'
@@ -80,23 +120,11 @@ function Search(props = {}) {
           <div className="buttons">
             <button
               className="button is-primary"
-              onClick={() => {
-                const prevPage = currentPage - 1 > 0
-                  ? currentPage - 1
-                  : currentPage;
-                setCurrentPage(prevPage);
-                window.scrollTo(0, 0);
-              }}
+              onClick={handlePrevPage}
             >Prev</button>
             <button
               className="button is-primary"
-              onClick={() => {
-                const nextPage = currentPage + 1 <= searchResults.total_pages
-                  ? currentPage + 1
-                  : currentPage;
-                setCurrentPage(nextPage);
-                window.scrollTo(0, 0);
-              }}
+              onClick={handleNextPage}
             >Next</button>
           </div>
         )
