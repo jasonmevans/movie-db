@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import useInput from '../../hooks/use-input';
 import useDebounce from '../../hooks/use-debounce';
+import usePersistedState from '../../hooks/use-persisted-state';
 import buildQueryParams from '../../utils/build-query-params';
 
 import { API_BASE, PAGE_SIZE } from '../../config';
@@ -10,11 +11,13 @@ import { API_BASE, PAGE_SIZE } from '../../config';
 import './search.css';
 
 function Search(props = {}) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchString, searchInput] = useInput('', {
-    id: "search-field",
-    placeholder: "Enter a movie title to search",
-    className: "input",
+  const [currentPage, setCurrentPage] = usePersistedState('current-page', 1);
+  const [savedSearchString, setSavedSearchString] = usePersistedState('search-string', '');
+
+  const [searchString, searchInput] = useInput(savedSearchString, {
+    id: 'search-field',
+    placeholder: 'Enter a movie title to search',
+    className: 'input',
     onChange: () => setCurrentPage(1)
   });
   const debouncedSearch = useDebounce(searchString, 500);
@@ -42,8 +45,11 @@ function Search(props = {}) {
     }
 
     window.fetch(`${requestUrl}?${buildQueryParams(params)}`)
-      .then(async (response) => setSearchResults(await response.json()));
-  }, [currentPage, debouncedSearch]);
+      .then(async (response) => {
+        setSearchResults(await response.json());
+        setSavedSearchString(debouncedSearch);
+      });
+  }, [currentPage, debouncedSearch, setSavedSearchString]);
 
   return (
     <div className="movie-search">
