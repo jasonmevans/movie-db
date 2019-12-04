@@ -3,10 +3,10 @@ const fetch = require('node-fetch');
 const app = express();
 const port = 3001;
 
-const { THEMOVIEDB_V4: apiKey } = require('./keys.json');
+const { THEMOVIEDB_V4: API_KEY } = require('./keys.json');
 
 const headers = {
-  'Authorization': `Bearer ${apiKey}`,
+  'Authorization': `Bearer ${API_KEY}`,
   'Content-Type': 'application/json;charset=utf-8'
 };
 
