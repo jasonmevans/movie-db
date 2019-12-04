@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import debounce from '../../utils/debounce';
+
+import useDebounce from '../../hooks/use-debounce';
 import buildQueryParams from '../../utils/build-query-params';
 
 import { API_BASE, PAGE_SIZE } from '../../config';
@@ -10,6 +11,7 @@ import './search.css';
 function Search(props = {}) {
   const [searchString, setSearchString] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const debouncedSearch = useDebounce(searchString, 500);
   const [searchResults, setSearchResults] = useState({
     results: [],
     page: 1,
@@ -17,17 +19,16 @@ function Search(props = {}) {
     total_results: 0
   });
 
-  const updateSearch = debounce(value => setSearchString(value), 500);
 
   useEffect(() => {
     let requestUrl = '';
     let params = {};
 
-    if (searchString === '') {
+    if (debouncedSearch === '') {
       requestUrl = `${API_BASE}/popular`;
     } else {
       requestUrl = `${API_BASE}/search`;
-      Object.assign(params, { query: searchString });
+      Object.assign(params, { query: debouncedSearch });
     }
 
     if (currentPage > 1) {
@@ -36,7 +37,7 @@ function Search(props = {}) {
 
     window.fetch(`${requestUrl}?${buildQueryParams(params)}`)
       .then(async (response) => setSearchResults(await response.json()));
-  }, [currentPage, searchString]);
+  }, [currentPage, debouncedSearch]);
 
   return (
     <div className="movie-search">
